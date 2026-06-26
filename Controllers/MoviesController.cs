@@ -15,18 +15,22 @@ namespace CinemaAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Movies
+        // GET: api/Movies — повертає фільми разом з жанром (Include)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies
+                .Include(m => m.Genre)
+                .ToListAsync();
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies
+                .Include(m => m.Genre)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (movie == null)
             {
@@ -43,6 +47,12 @@ namespace CinemaAPI.Controllers
             if (id != movie.Id)
             {
                 return BadRequest();
+            }
+
+            // Перевіряємо чи існує вказаний жанр
+            if (!_context.Genres.Any(g => g.Id == movie.GenreId))
+            {
+                return BadRequest(new { message = $"Жанр з Id={movie.GenreId} не існує." });
             }
 
             _context.Entry(movie).State = EntityState.Modified;
@@ -70,6 +80,12 @@ namespace CinemaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
+            // Перевіряємо чи існує вказаний жанр
+            if (!_context.Genres.Any(g => g.Id == movie.GenreId))
+            {
+                return BadRequest(new { message = $"Жанр з Id={movie.GenreId} не існує." });
+            }
+
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 

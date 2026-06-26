@@ -15,18 +15,24 @@ namespace CinemaAPI.Controllers
             _context = context;
         }
 
-        // GET: api/MovieActors
+        // GET: api/MovieActors — повертає зв'язки разом з деталями фільму та актора
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieActor>>> GetMovieActors()
         {
-            return await _context.MovieActors.ToListAsync();
+            return await _context.MovieActors
+                .Include(ma => ma.Movie)
+                .Include(ma => ma.Actor)
+                .ToListAsync();
         }
 
         // GET: api/MovieActors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieActor>> GetMovieActor(int id)
         {
-            var movieActor = await _context.MovieActors.FindAsync(id);
+            var movieActor = await _context.MovieActors
+                .Include(ma => ma.Movie)
+                .Include(ma => ma.Actor)
+                .FirstOrDefaultAsync(ma => ma.Id == id);
 
             if (movieActor == null)
             {
@@ -44,6 +50,13 @@ namespace CinemaAPI.Controllers
             {
                 return BadRequest();
             }
+
+            // Перевіряємо існування фільму та актора
+            if (!_context.Movies.Any(m => m.Id == movieActor.MovieId))
+                return BadRequest(new { message = $"Фільм з Id={movieActor.MovieId} не існує." });
+
+            if (!_context.Actors.Any(a => a.Id == movieActor.ActorId))
+                return BadRequest(new { message = $"Актор з Id={movieActor.ActorId} не існує." });
 
             _context.Entry(movieActor).State = EntityState.Modified;
 
@@ -70,6 +83,17 @@ namespace CinemaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<MovieActor>> PostMovieActor(MovieActor movieActor)
         {
+            // Перевіряємо існування фільму та актора
+            if (!_context.Movies.Any(m => m.Id == movieActor.MovieId))
+                return BadRequest(new { message = $"Фільм з Id={movieActor.MovieId} не існує." });
+
+            if (!_context.Actors.Any(a => a.Id == movieActor.ActorId))
+                return BadRequest(new { message = $"Актор з Id={movieActor.ActorId} не існує." });
+
+            // Перевіряємо, чи такий зв'язок вже існує
+            if (_context.MovieActors.Any(ma => ma.MovieId == movieActor.MovieId && ma.ActorId == movieActor.ActorId))
+                return Conflict(new { message = "Цей актор вже прив'язаний до цього фільму." });
+
             _context.MovieActors.Add(movieActor);
             await _context.SaveChangesAsync();
 

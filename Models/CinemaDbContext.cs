@@ -12,7 +12,29 @@ namespace CinemaAPI.Models
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Явно визначаємо зв'язок багато-до-багатьох через проміжну сутність MovieActor
+            modelBuilder.Entity<MovieActor>()
+                .HasOne(ma => ma.Movie)
+                .WithMany(m => m.MovieActors)
+                .HasForeignKey(ma => ma.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<MovieActor>()
+                .HasOne(ma => ma.Actor)
+                .WithMany(a => a.MovieActors)
+                .HasForeignKey(ma => ma.ActorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Зв'язок один-до-багатьох між Genre та Movie
+            modelBuilder.Entity<Movie>()
+                .HasOne(m => m.Genre)
+                .WithMany(g => g.Movies)
+                .HasForeignKey(m => m.GenreId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

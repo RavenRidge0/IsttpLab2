@@ -19,7 +19,9 @@ namespace CinemaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
         {
-            return await _context.Actors.ToListAsync();
+            return await _context.Actors
+                .Include(a => a.MovieActors)
+                .ToListAsync();
         }
 
         // GET: api/Actors/5

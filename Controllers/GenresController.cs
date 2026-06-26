@@ -36,6 +36,20 @@ namespace CinemaAPI.Controllers
             return genre;
         }
 
+        // GET: api/Genres/5/movies — отримати всі фільми жанру (новий ендпоінт)
+        [HttpGet("{id}/movies")]
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesByGenre(int id)
+        {
+            if (!_context.Genres.Any(g => g.Id == id))
+            {
+                return NotFound();
+            }
+
+            return await _context.Movies
+                .Where(m => m.GenreId == id)
+                .ToListAsync();
+        }
+
         // PUT: api/Genres/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGenre(int id, Genre genre)

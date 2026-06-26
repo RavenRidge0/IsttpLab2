@@ -53,8 +53,14 @@
 
             <section class="card table-section">
                 <div class="table-header">
-                    <h2>Список Жанрів</h2>
-                    <span id="counter" class="badge">0</span>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <h2>Список Жанрів</h2>
+                        <span id="counter" class="badge">0</span>
+                    </div>
+                    <div class="table-actions" style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="text" id="search-box" placeholder="Пошук жанрів..." onkeyup="searchGenres()" class="form-control" style="padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.6); color: white;">
+                        <button onclick="sortGenres()" class="btn btn-primary" style="padding: 0.5rem 1rem;">Сортувати A-Z</button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
