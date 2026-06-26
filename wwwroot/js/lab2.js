@@ -1,7 +1,6 @@
 const uri = 'api/Genres';
 let genresList = [];
 
-// ─── Допоміжна функція: Toast-сповіщення ─────────────────────────────────────
 function showToast(message, type = 'success') {
     const existing = document.getElementById('toast');
     if (existing) existing.remove();
@@ -12,17 +11,14 @@ function showToast(message, type = 'success') {
     toast.innerText = message;
     document.body.appendChild(toast);
 
-    // Показуємо
     requestAnimationFrame(() => toast.classList.add('toast-visible'));
 
-    // Ховаємо через 3 секунди
     setTimeout(() => {
         toast.classList.remove('toast-visible');
         setTimeout(() => toast.remove(), 400);
     }, 3000);
 }
 
-// ─── CRUD функції ─────────────────────────────────────────────────────────────
 
 function getGenres() {
     fetch(uri)
@@ -148,7 +144,6 @@ function closeInput() {
     document.getElementById('editGenreSection').style.display = 'none';
 }
 
-// ─── Додатковий функціонал: Пошук та Сортування ──────────────────────────────
 
 let isSortedAsc = false;
 
@@ -170,14 +165,12 @@ function sortGenres() {
     });
     _renderTable(sortedData);
     
-    // Оновити текст кнопки
     event.target.innerText = isSortedAsc ? "Сортувати Z-A" : "Сортувати A-Z";
 }
 
-// ─── Відображення даних ───────────────────────────────────────────────────────
 
 function _displayGenres(data) {
-    genresList = data; // Зберігаємо оригінальний список
+    genresList = data;
     _renderTable(data);
 }
 
