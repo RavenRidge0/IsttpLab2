@@ -16,7 +16,6 @@ namespace CinemaAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Явно визначаємо зв'язок багато-до-багатьох через проміжну сутність MovieActor
             modelBuilder.Entity<MovieActor>()
                 .HasOne(ma => ma.Movie)
                 .WithMany(m => m.MovieActors)
@@ -29,7 +28,6 @@ namespace CinemaAPI.Models
                 .HasForeignKey(ma => ma.ActorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Зв'язок один-до-багатьох між Genre та Movie
             modelBuilder.Entity<Movie>()
                 .HasOne(m => m.Genre)
                 .WithMany(g => g.Movies)
