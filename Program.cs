@@ -13,20 +13,17 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
 
 var app = builder.Build();
 
-// Автоматично створюємо базу даних при старті (Code First)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
     db.Database.EnsureCreated();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-// Статичні файли мають бути ДО UseHttpsRedirection
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
