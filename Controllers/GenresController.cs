@@ -36,7 +36,6 @@ namespace CinemaAPI.Controllers
             return genre;
         }
 
-        // GET: api/Genres/5/movies — отримати всі фільми жанру (новий ендпоінт)
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMoviesByGenre(int id)
         {
