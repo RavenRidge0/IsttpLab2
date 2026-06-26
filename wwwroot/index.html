@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema API - Керування Жанрами</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Cinema API</h1>
+            <p>Панель керування жанрами</p>
+        </header>
+
+        <main class="app-main">
+            <section class="card add-section">
+                <h2><i class="icon">+</i> Додати Жанр</h2>
+                <form action="javascript:void(0);" onsubmit="addGenre()" class="form-grid">
+                    <div class="form-group">
+                        <label for="add-name">Назва жанру</label>
+                        <input type="text" id="add-name" placeholder="Наприклад: Комедія" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Опис жанру</label>
+                        <input type="text" id="add-description" placeholder="Короткий опис">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Додати</button>
+                </form>
+            </section>
+
+            <section id="editGenreSection" class="card edit-section" style="display: none;">
+                <div class="edit-header">
+                    <h2>Редагувати Жанр</h2>
+                    <button onclick="closeInput()" class="btn-close" aria-label="Close">✕</button>
+                </div>
+                <form action="javascript:void(0);" onsubmit="updateGenre()" class="form-grid">
+                    <input type="hidden" id="edit-id">
+                    <div class="form-group">
+                        <label for="edit-name">Назва жанру</label>
+                        <input type="text" id="edit-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Опис жанру</label>
+                        <input type="text" id="edit-description">
+                    </div>
+                    <button type="submit" class="btn btn-success">Зберегти зміни</button>
+                </form>
+            </section>
+
+            <section class="card table-section">
+                <div class="table-header">
+                    <h2>Список Жанрів</h2>
+                    <span id="counter" class="badge">0</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Назва</th>
+                                <th>Опис</th>
+                                <th class="actions-col">Дії</th>
+                            </tr>
+                        </thead>
+                        <tbody id="genres">
+                            <!-- Data will be populated here via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/lab2.js"></script>
+    <script type="text/javascript">
+        getGenres();
+    </script>
+</body>
+</html>
