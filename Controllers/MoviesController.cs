@@ -15,7 +15,6 @@ namespace CinemaAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Movies — повертає фільми разом з жанром (Include)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
@@ -49,7 +48,6 @@ namespace CinemaAPI.Controllers
                 return BadRequest();
             }
 
-            // Перевіряємо чи існує вказаний жанр
             if (!_context.Genres.Any(g => g.Id == movie.GenreId))
             {
                 return BadRequest(new { message = $"Жанр з Id={movie.GenreId} не існує." });
@@ -80,7 +78,6 @@ namespace CinemaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
-            // Перевіряємо чи існує вказаний жанр
             if (!_context.Genres.Any(g => g.Id == movie.GenreId))
             {
                 return BadRequest(new { message = $"Жанр з Id={movie.GenreId} не існує." });
