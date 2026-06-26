@@ -1,0 +1,78 @@
+@CinemaAPI_HostAddress = http://localhost:8080
+
+### Жанри (Genres)
+
+# Отримати всі жанри
+GET {{CinemaAPI_HostAddress}}/api/Genres
+
+###
+
+# Створити новий жанр
+POST {{CinemaAPI_HostAddress}}/api/Genres
+Content-Type: application/json
+
+{
+  "name": "Фантастика",
+  "description": "Фільми про майбутнє та космос"
+}
+
+###
+
+# Оновити існуючий жанр (з ID 1)
+PUT {{CinemaAPI_HostAddress}}/api/Genres/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Наукова фантастика",
+  "description": "Оновлений опис жанру"
+}
+
+###
+
+# Видалити жанр (з ID 1)
+DELETE {{CinemaAPI_HostAddress}}/api/Genres/1
+
+### Актори (Actors)
+
+# Отримати всіх акторів
+GET {{CinemaAPI_HostAddress}}/api/Actors
+
+###
+
+# Створити нового актора
+POST {{CinemaAPI_HostAddress}}/api/Actors
+Content-Type: application/json
+
+{
+  "name": "Кіану Рівз",
+  "bio": "Канадський актор"
+}
+
+### Фільми (Movies)
+
+# Отримати всі фільми
+GET {{CinemaAPI_HostAddress}}/api/Movies
+
+###
+
+# Створити новий фільм (вказуємо GenreId = 1)
+POST {{CinemaAPI_HostAddress}}/api/Movies
+Content-Type: application/json
+
+{
+  "title": "Матриця",
+  "description": "Культовий фільм",
+  "genreId": 1
+}
+
+### Зв'язки (MovieActors)
+
+# Додати актора до фільму
+POST {{CinemaAPI_HostAddress}}/api/MovieActors
+Content-Type: application/json
+
+{
+  "movieId": 1,
+  "actorId": 1
+}
