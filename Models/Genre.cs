@@ -12,7 +12,6 @@ namespace CinemaAPI.Models
 
         public string? Description { get; set; }
 
-        // JsonIgnore запобігає циклічним посиланням при серіалізації JSON
         [JsonIgnore]
         public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
     }
