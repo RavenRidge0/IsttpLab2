@@ -15,7 +15,6 @@ namespace CinemaAPI.Controllers
             _context = context;
         }
 
-        // GET: api/MovieActors — повертає зв'язки разом з деталями фільму та актора
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieActor>>> GetMovieActors()
         {
@@ -51,7 +50,6 @@ namespace CinemaAPI.Controllers
                 return BadRequest();
             }
 
-            // Перевіряємо існування фільму та актора
             if (!_context.Movies.Any(m => m.Id == movieActor.MovieId))
                 return BadRequest(new { message = $"Фільм з Id={movieActor.MovieId} не існує." });
 
@@ -83,14 +81,12 @@ namespace CinemaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<MovieActor>> PostMovieActor(MovieActor movieActor)
         {
-            // Перевіряємо існування фільму та актора
             if (!_context.Movies.Any(m => m.Id == movieActor.MovieId))
                 return BadRequest(new { message = $"Фільм з Id={movieActor.MovieId} не існує." });
 
             if (!_context.Actors.Any(a => a.Id == movieActor.ActorId))
                 return BadRequest(new { message = $"Актор з Id={movieActor.ActorId} не існує." });
 
-            // Перевіряємо, чи такий зв'язок вже існує
             if (_context.MovieActors.Any(ma => ma.MovieId == movieActor.MovieId && ma.ActorId == movieActor.ActorId))
                 return Conflict(new { message = "Цей актор вже прив'язаний до цього фільму." });
 
